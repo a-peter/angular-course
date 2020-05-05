@@ -1,0 +1,90 @@
+<div class="container">
+  <div class="row">
+    <div class="col-xs-12 col-md-6 col-md-offset-3">
+      <form #postForm="ngForm" (ngSubmit)="onCreatePost(postForm.value)">
+        <div class="form-group">
+          <label for="title">Title</label>
+          <input
+            type="text"
+            class="form-control"
+            id="title"
+            required
+            ngModel
+            name="title"
+          />
+        </div>
+        <div class="form-group">
+          <label for="content">Content</label>
+          <textarea
+            class="form-control"
+            id="content"
+            required
+            ngModel
+            name="content"
+          ></textarea>
+        </div>
+        <button
+          class="btn btn-primary"
+          type="submit"
+          [disabled]="!postForm.valid"
+        >
+          Send Post
+        </button>
+      </form>
+    </div>
+  </div>
+  <hr />
+  <div class="row">
+    <div class="col-xs-12 col-md-6 col-md-offset-3">
+      <button class="btn btn-primary" (click)="onFetchPosts()">
+        Fetch Posts
+      </button>
+      |
+      <button
+        class="btn btn-danger"
+        [disabled]="loadedPosts.length < 1"
+        (click)="onClearPosts()"
+      >
+        Clear Posts
+      </button>
+      |
+      <button class="btn"
+      (click)="onCreateDummyData()">Create dummy data</button>
+    </div>
+  </div>
+  <div class="row">
+    <div class="col-xs-12 col-md-6 col-md-offset-3">
+      <div *ngIf="loadedPosts.length > 0 && !isFetching">
+        <ul class="list-group">
+          <li
+            *ngFor="let post of loadedPosts; index as i"
+            class="list-group-item"
+          >
+            <h1>{{ post.title }} ({{ i }})</h1>
+            <p>
+              <small>{{ post.id }}</small>
+            </p>
+            <p>{{ post.content }}</p>
+          </li>
+        </ul>
+      </div>
+      <div *ngIf="error" class="alert alert-danger">
+        <h1>An Error Occurred!</h1>
+        <p>{{ error }}</p>
+        <button class="bnt bnt-danger" (click)="onHandleError()">Ok</button>
+      </div>
+      <p *ngIf="loadedPosts.length < 1 && !isFetching && !error">No posts available!</p>
+      <div *ngIf="isFetching && !error" >
+        <p>Fetching data</p>
+        <div class="sk-chase">
+          <div class="sk-chase-dot"></div>
+          <div class="sk-chase-dot"></div>
+          <div class="sk-chase-dot"></div>
+          <div class="sk-chase-dot"></div>
+          <div class="sk-chase-dot"></div>
+          <div class="sk-chase-dot"></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
